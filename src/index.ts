@@ -138,7 +138,12 @@ mcp.addTool({
 
       // Use FastMCP's imageContent helper for proper image handling
       // This automatically detects MIME type from file content and validates the image
-      return imageContent({ path: imagePath });
+      const image = await imageContent({ path: imagePath });
+
+      // Wrap in ContentResult format for consistent response structure
+      return {
+        content: [image],
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
       return {
@@ -294,7 +299,12 @@ mcp.addTool({
       const buffer = await sharpInstance.toBuffer();
 
       // Use FastMCP's imageContent helper for proper MIME type detection
-      return imageContent({ buffer });
+      const image = await imageContent({ buffer });
+
+      // Wrap in ContentResult format for consistent response structure
+      return {
+        content: [image],
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
@@ -349,7 +359,12 @@ mcp.addTool({
         .toBuffer();
 
       // Use FastMCP's imageContent helper for proper MIME type detection
-      return imageContent({ buffer });
+      const image = await imageContent({ buffer });
+
+      // Wrap in ContentResult format for consistent response structure
+      return {
+        content: [image],
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
@@ -401,7 +416,12 @@ mcp.addTool({
         .toBuffer();
 
       // Use FastMCP's imageContent helper for proper MIME type detection
-      return imageContent({ buffer });
+      const image = await imageContent({ buffer });
+
+      // Wrap in ContentResult format for consistent response structure
+      return {
+        content: [image],
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
