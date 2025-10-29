@@ -1,4 +1,4 @@
-import { FastMCP } from "fastmcp";
+import { FastMCP, imageContent } from "fastmcp";
 import { z } from "zod";
 import * as fs from "fs";
 import * as path from "path";
@@ -17,22 +17,6 @@ const mcp = new FastMCP({
   name: "image-mcp-server",
   version: "1.0.0",
 });
-
-/**
- * Helper function to get MIME type from file extension
- */
-function getMimeType(filename: string): string {
-  const ext = path.extname(filename).toLowerCase();
-  const mimeTypes: Record<string, string> = {
-    ".jpg": "image/jpeg",
-    ".jpeg": "image/jpeg",
-    ".png": "image/png",
-    ".gif": "image/gif",
-    ".webp": "image/webp",
-    ".bmp": "image/bmp",
-  };
-  return mimeTypes[ext] || "application/octet-stream";
-}
 
 /**
  * Helper function to check if file is a supported image
@@ -152,25 +136,9 @@ mcp.addTool({
         throw new Error(`Image file not found: ${filename}. ${availableImages}`);
       }
 
-      // Read the image file
-      const imageBuffer = fs.readFileSync(imagePath);
-
-      // Convert to base64
-      const base64Image = imageBuffer.toString("base64");
-
-      // Get MIME type
-      const mimeType = getMimeType(filename);
-
-      // Return in MCP image format
-      return {
-        content: [
-          {
-            type: "image",
-            data: base64Image,
-            mimeType: mimeType,
-          },
-        ],
-      };
+      // Use FastMCP's imageContent helper for proper image handling
+      // This automatically detects MIME type from file content and validates the image
+      return imageContent({ path: imagePath });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
       return {
@@ -222,8 +190,11 @@ mcp.addTool({
       const stats = fs.statSync(imagePath);
       const sizeKB = (stats.size / 1024).toFixed(2);
       const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
-      const mimeType = getMimeType(filename);
-      const format = path.extname(filename).substring(1).toUpperCase();
+
+      // Use Sharp to detect actual image format and MIME type from file content
+      const imageMetadata = await sharp(imagePath).metadata();
+      const format = imageMetadata.format?.toUpperCase() || path.extname(filename).substring(1).toUpperCase();
+      const mimeType = `image/${imageMetadata.format || path.extname(filename).substring(1)}`;
 
       // For basic metadata, we don't need to decode the entire image
       // But we can read basic dimensions from image headers for common formats
@@ -321,20 +292,9 @@ mcp.addTool({
 
       // Get the converted buffer
       const buffer = await sharpInstance.toBuffer();
-      const base64Image = buffer.toString("base64");
 
-      // Determine MIME type
-      const mimeType = getMimeType(`.${targetFormat}`);
-
-      return {
-        content: [
-          {
-            type: "image",
-            data: base64Image,
-            mimeType: mimeType,
-          },
-        ],
-      };
+      // Use FastMCP's imageContent helper for proper MIME type detection
+      return imageContent({ buffer });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
@@ -388,18 +348,8 @@ mcp.addTool({
         .resize(width, height, { fit: fit as any })
         .toBuffer();
 
-      const base64Image = buffer.toString("base64");
-      const mimeType = getMimeType(filename);
-
-      return {
-        content: [
-          {
-            type: "image",
-            data: base64Image,
-            mimeType: mimeType,
-          },
-        ],
-      };
+      // Use FastMCP's imageContent helper for proper MIME type detection
+      return imageContent({ buffer });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
@@ -450,18 +400,8 @@ mcp.addTool({
         })
         .toBuffer();
 
-      const base64Image = buffer.toString("base64");
-      const mimeType = getMimeType(filename);
-
-      return {
-        content: [
-          {
-            type: "image",
-            data: base64Image,
-            mimeType: mimeType,
-          },
-        ],
-      };
+      // Use FastMCP's imageContent helper for proper MIME type detection
+      return imageContent({ buffer });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
