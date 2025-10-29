@@ -20,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "fastmcp": "^1.0.0",
+    "fastmcp": "^2.0.0",
     "sharp": "^0.33.0",
     "zod": "^3.22.0"
   },
