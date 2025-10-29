@@ -1,0 +1,38 @@
+# Node modules (will be installed in container)
+node_modules/
+
+# Build artifacts (will be built in container)
+dist/
+
+# Development files
+*.log
+npm-debug.log*
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+coverage/
+.nyc_output/
+
+# Documentation (not needed in container)
+*.md
+!README.md
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Other config files
+.editorconfig
+.prettierrc
+.eslintrc*

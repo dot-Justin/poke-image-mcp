@@ -546,19 +546,38 @@ mcp.addTool({
  *
  * FastMCP automatically handles multiple transport types:
  * - stdio: For local testing and CLI usage
- * - WebSocket/SSE: For remote deployment (e.g., Smithery)
+ * - sse: For remote deployment (e.g., Smithery)
  *
- * The transport is automatically selected based on how the server is started.
+ * The transport is automatically selected based on environment:
+ * - If PORT is set: Use SSE transport (for Smithery deployment)
+ * - Otherwise: Use stdio transport (for local development)
  */
 async function main() {
   try {
-    // Start the server with stdio transport for local use
-    await mcp.start({
-      transportType: "stdio",
-    });
+    const port = process.env.PORT;
 
-    // Log to stderr (stdout is reserved for MCP protocol communication)
-    console.error("Image MCP Server is running");
+    if (port) {
+      // Remote deployment mode (Smithery) - use SSE transport
+      await mcp.start({
+        transportType: "sse",
+        sse: {
+          endpoint: "/mcp",
+          port: parseInt(port, 10),
+        },
+      });
+
+      console.error(`Image MCP Server is running on port ${port}`);
+      console.error(`SSE endpoint: http://localhost:${port}/mcp`);
+    } else {
+      // Local development mode - use stdio transport
+      await mcp.start({
+        transportType: "stdio",
+      });
+
+      console.error("Image MCP Server is running (stdio mode)");
+    }
+
+    // Log available tools to stderr (stdout is reserved for MCP protocol in stdio mode)
     console.error("Available tools:");
     console.error("  - list_images: List all available images");
     console.error("  - get_image: Get a specific image");

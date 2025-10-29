@@ -3,27 +3,59 @@ node_modules/
 
 # Build output
 dist/
+build/
+*.tsbuildinfo
 
 # Logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
 # Environment variables
 .env
+.env.*
+!.env.example
 .env.local
+.env.production.local
+.env.development.local
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-project
+*.sublime-workspace
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
-# TypeScript
-*.tsbuildinfo
+# Claude Code
+.claude/
+.claude_history
 
-# Test images in root (we keep them in images/ folder)
-/test.jpg
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# Lock files (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

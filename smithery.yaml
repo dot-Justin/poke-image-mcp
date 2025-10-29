@@ -1,0 +1,16 @@
+runtime: "container"
+build:
+  dockerfile: "Dockerfile"
+  dockerBuildPath: "."
+startCommand:
+  type: "http"
+  # Optional: Add configuration schema if you want users to configure the server
+  # configSchema:
+  #   type: "object"
+  #   properties:
+  #     imagesPath:
+  #       type: "string"
+  #       description: "Custom path to images directory"
+  #       default: "/app/images"
+env:
+  NODE_ENV: "production"
