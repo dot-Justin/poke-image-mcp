@@ -50,7 +50,7 @@ function isSupportedImage(filename: string): boolean {
 mcp.addTool({
   name: "list_images",
   description: "Lists all available images in the images directory",
-  execute: async () => {
+  execute: async (args, context) => {
     try {
       // Check if images directory exists
       if (!fs.existsSync(IMAGES_DIR)) {
@@ -121,7 +121,7 @@ mcp.addTool({
   parameters: z.object({
     filename: z.string().describe("The filename of the image to retrieve (e.g., 'test.jpg')"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename } = args;
 
@@ -197,7 +197,7 @@ mcp.addTool({
   parameters: z.object({
     filename: z.string().describe("The filename of the image to get metadata for (e.g., 'test.jpg')"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename } = args;
 
@@ -284,7 +284,7 @@ mcp.addTool({
     targetFormat: z.enum(["jpg", "jpeg", "png", "webp", "gif"]).describe("The target format to convert to"),
     quality: z.number().min(1).max(100).optional().describe("Quality for lossy formats (1-100, default: 90)"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename, targetFormat, quality = 90 } = args;
 
@@ -364,7 +364,7 @@ mcp.addTool({
     height: z.number().positive().optional().describe("Target height in pixels"),
     fit: z.enum(["contain", "cover", "fill", "inside", "outside"]).optional().describe("How to fit the image (default: contain)"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename, width, height, fit = "contain" } = args;
 
@@ -427,7 +427,7 @@ mcp.addTool({
     filename: z.string().describe("The filename of the image"),
     maxDimension: z.number().positive().optional().describe("Maximum dimension in pixels (default: 200)"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename, maxDimension = 200 } = args;
 
@@ -488,7 +488,7 @@ mcp.addTool({
   parameters: z.object({
     filename: z.string().describe("The filename of the image"),
   }),
-  execute: async (args) => {
+  execute: async (args, context) => {
     try {
       const { filename } = args;
 

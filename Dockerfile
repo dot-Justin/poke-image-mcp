@@ -21,8 +21,9 @@ COPY src/ ./src/
 # Install dependencies (this will also run the build via prepare script)
 RUN npm ci --production=false
 
-# Create images directory
+# Create images directory and copy image files
 RUN mkdir -p /app/images
+COPY images/ ./images/
 
 # Expose port (Smithery uses 8081)
 EXPOSE 8081
