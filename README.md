@@ -1,5 +1,7 @@
 # Image MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@dot-Justin/poke-image-mcp)](https://smithery.ai/server/@dot-Justin/poke-image-mcp)
+
 A comprehensive Model Context Protocol (MCP) server for image handling, built with FastMCP. This server provides LLMs with powerful image capabilities including retrieval, conversion, resizing, and metadata extraction.
 
 ## Features
@@ -28,6 +30,15 @@ image-mcp-test/
 
 ## Installation
 
+### Installing via Smithery
+
+To install poke-image-mcp automatically via [Smithery](https://smithery.ai/server/@dot-Justin/poke-image-mcp):
+
+```bash
+npx -y @smithery/cli install @dot-Justin/poke-image-mcp
+```
+
+### Manual Installation
 Install the required dependencies:
 
 ```bash
