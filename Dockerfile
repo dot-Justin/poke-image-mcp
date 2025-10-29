@@ -15,14 +15,11 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json ./
 
-# Install dependencies
-RUN npm ci --production=false
-
-# Copy source code
+# Copy source code (needed before npm install due to prepare script)
 COPY src/ ./src/
 
-# Build TypeScript
-RUN npm run build
+# Install dependencies (this will also run the build via prepare script)
+RUN npm ci --production=false
 
 # Create images directory
 RUN mkdir -p /app/images
