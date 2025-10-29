@@ -544,7 +544,7 @@ mcp.addTool({
 /**
  * Start the MCP server
  *
- * FastMCP v2.0.0+ supports multiple transport types:
+ * FastMCP v3.x supports multiple transport types:
  * - stdio: For local testing and CLI usage
  * - httpStream: For remote deployment (e.g., Smithery) with streamable HTTP
  *
